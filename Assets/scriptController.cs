@@ -3,9 +3,14 @@ using System.Collections;
 
 public class scriptController : MonoBehaviour {
 
-    public GameObject[] groupXTags;
-    public GameObject[] groupYTags;
-    public GameObject[] groupZTags;
+    //public GameObject[] groupXTags;
+    //public GameObject[] groupYTags;
+    //public GameObject[] groupZTags;
+
+    GameObject[] cubesHor;
+    GameObject[] cubesVer;
+
+    Vector3[] rotationAxes = new Vector3[2];
 
     Vector2 clickStart;
     Vector2 clickEnd;
@@ -30,17 +35,47 @@ public class scriptController : MonoBehaviour {
             bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
             if (hit) { // find which face of a cube has been selected, the group it belongs to and the direction the rotate
 
+                // get the groups of the selected cube face
+                string faceTag = hitInfo.transform.gameObject.transform.tag;
+                string[] groupTags = new string[2];
+                Debug.Log(faceTag);
+                Debug.Log(hitInfo.transform.gameObject.name);
+                if (faceTag == "x") {
+                    groupTags[0] = "Y";
+                    groupTags[1] = "Z";
+                    rotationAxes[0] = Vector3.forward;
+                    rotationAxes[1] = Vector3.down;
+                }
+                if (faceTag == "y") {
+                    groupTags[0] = "Y";
+                    groupTags[1] = "X";
+                    rotationAxes[0] = Vector3.right;
+                    rotationAxes[1] = Vector3.down;
+                }
+                if (faceTag == "z") {
+                    groupTags[0] = "Y";
+                    groupTags[1] = "X";
+                    rotationAxes[0] = Vector3.right;
+                    rotationAxes[1] = Vector3.down;
+                }
+
+                string hor = hitInfo.transform.parent.gameObject.transform.FindChild("tag" + groupTags[0]).tag;
+                string ver = hitInfo.transform.parent.gameObject.transform.FindChild("tag" + groupTags[1]).tag;
+
+                cubesHor = GameObject.FindGameObjectsWithTag(hor);
+                cubesVer = GameObject.FindGameObjectsWithTag(ver);
+
                 // get initial click position for direction of rotation
                 clickStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
                 // get the groups of the selected cube
-                string x = hitInfo.transform.parent.gameObject.transform.FindChild("tagX").tag;
-                string y = hitInfo.transform.parent.gameObject.transform.FindChild("tagY").tag;
-                string z = hitInfo.transform.parent.gameObject.transform.FindChild("tagZ").tag;
+                //string x = hitInfo.transform.parent.gameObject.transform.FindChild("tagX").tag;
+                //string y = hitInfo.transform.parent.gameObject.transform.FindChild("tagY").tag;
+                //string z = hitInfo.transform.parent.gameObject.transform.FindChild("tagZ").tag;
 
-                groupXTags = GameObject.FindGameObjectsWithTag(x);
-                groupYTags = GameObject.FindGameObjectsWithTag(y);
-                groupZTags = GameObject.FindGameObjectsWithTag(z);
+                //groupXTags = GameObject.FindGameObjectsWithTag(x);
+                //groupYTags = GameObject.FindGameObjectsWithTag(y);
+                //groupZTags = GameObject.FindGameObjectsWithTag(z);
             }
         }
         if (Input.GetMouseButtonUp(0)) {
@@ -54,21 +89,19 @@ public class scriptController : MonoBehaviour {
             // find direction of swipe and rotate cubes
             if (swipe.y > 0 && swipe.x > -0.5f && swipe.x < 0.5f) {
                 swipeDirection = "up";
-                rotateGroup(groupXTags, Vector3.right, true);
+                rotateGroup(cubesVer, rotationAxes[0], true);
             }
             if (swipe.y < 0 && swipe.x > -0.5f && swipe.x < 0.5f) {
                 swipeDirection = "down";
-                rotateGroup(groupXTags, Vector3.right, false);
+                rotateGroup(cubesVer, rotationAxes[0], false);
             }
             if (swipe.x > 0 && swipe.y > -0.5f && swipe.y < 0.5f) {
-                Debug.Log("right");
                 swipeDirection = "right";
-                rotateGroup(groupYTags, Vector3.down, true);
+                rotateGroup(cubesHor, rotationAxes[1], true);
             }
             if (swipe.x < 0 && swipe.y > -0.5f && swipe.y < 0.5f) {
-                Debug.Log("Left");
                 swipeDirection = "left";
-                rotateGroup(groupYTags, Vector3.down, false);
+                rotateGroup(cubesHor, rotationAxes[1], false);
             }
 
             // update cube groups
