@@ -13,6 +13,7 @@ Cubes do not update their new position after a rotation properly
 ## Todo
 
 * Fix issues
+* Rotate camera
 * Add highlight for selected face
 * Add indication of the rotataion about to be preformed
 * Shuffle cubes
