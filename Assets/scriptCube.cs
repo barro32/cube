@@ -17,7 +17,7 @@ public class scriptCube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateCube();
+        //highlightCubeFace();
     }
 
     public void updateCube() {
@@ -26,35 +26,55 @@ public class scriptCube : MonoBehaviour
     }
 
     void getCubeGroups() {
-        if (transform.position.x < 0) {
+        if (transform.position.x < -0.5) {
+            transform.position = new Vector3(-1, transform.position.y, transform.position.z);
+
             cubeGroupX = 1;
-            gameObject.transform.Find("tagX").tag = "x1";
-        } else if (transform.TransformPoint(transform.position).x == 0) {
+            transform.Find("tagX").tag = "x1";
+        } else if (-0.5 < transform.position.x && transform.position.x < 0.5) {
+            transform.position = new Vector3(0, transform.position.y, transform.position.z);
+
             cubeGroupX = 2;
-            gameObject.transform.Find("tagX").tag = "x2";
-        } else if (transform.position.x > 0) {
+            transform.Find("tagX").tag = "x2";
+        } else if (transform.position.x > 0.5) {
+            transform.position = new Vector3(1, transform.position.y, transform.position.z);
+
             cubeGroupX = 3;
-            gameObject.transform.Find("tagX").tag = "x3";
+            transform.Find("tagX").tag = "x3";
         }
-        if (transform.position.y < 0) {
+
+        if (transform.position.y < -0.5) {
+            transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+
             cubeGroupY = 1;
-            gameObject.transform.Find("tagY").tag = "y1";
-        } else if (transform.position.y == 0) {
+            transform.Find("tagY").tag = "y1";
+        } else if (-0.5 < transform.position.y && transform.position.y < 0.5) {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+
             cubeGroupY = 2;
-            gameObject.transform.Find("tagY").tag = "y2";
-        } else if (transform.position.y > 0) {
+            transform.Find("tagY").tag = "y2";
+        } else if (transform.position.y > 0.5) {
+            transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+
             cubeGroupY = 3;
-            gameObject.transform.Find("tagY").tag = "y3";
+            transform.Find("tagY").tag = "y3";
         }
-        if (transform.position.z < 0) {
+
+        if (transform.position.z < -0.5) {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1);
+
             cubeGroupZ = 1;
-            gameObject.transform.Find("tagZ").tag = "z1";
-        } else if (transform.position.z == 0) {
+            transform.Find("tagZ").tag = "z1";
+        } else if (-0.5 < transform.position.z && transform.position.z < 0.5) {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+
             cubeGroupZ = 2;
-            gameObject.transform.Find("tagZ").tag = "z2";
-        } else if (transform.position.z > 0) {
+            transform.Find("tagZ").tag = "z2";
+        } else if (transform.position.z > 0.5) {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 1);
+
             cubeGroupZ = 3;
-            gameObject.transform.Find("tagZ").tag = "z3";
+            transform.Find("tagZ").tag = "z3";
         }
     }
 
@@ -71,4 +91,12 @@ public class scriptCube : MonoBehaviour
             }
         }
     }
+
+    //void highlightCubeFace() {
+    //    for (int i = 0; i < 6; i++) {
+    //        transform.GetChild(i)
+    //        Texture colour = transform.GetChild(i).GetComponent<Renderer>().material.mainTexture;
+    //        Debug.Log(colour);
+    //    }
+    //}
 }
