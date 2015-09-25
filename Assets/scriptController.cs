@@ -50,20 +50,21 @@ public class scriptController : MonoBehaviour {
                 resetHighlightedCubes(cubesVer);
                 highlightCubes(cubesHor);
             }
-            if (swipeTemp.x > -0.5f && swipeTemp.x < 0.5f && swipeTemp.y > -0.5f && swipeTemp.y < 0.5f) {
-                resetHighlightedCubes(cubesHor);
-                resetHighlightedCubes(cubesVer);
-            }
+            //if (swipeTemp.x > -0.5f && swipeTemp.x < 0.5f && swipeTemp.y > -0.5f && swipeTemp.y < 0.5f) {
+            //    resetHighlightedCubes(cubesHor);
+            //    resetHighlightedCubes(cubesVer);
+            //}
 
         }
+        cameraControl();
     }
 
     void handleClick() {
         if (Input.GetMouseButtonDown(0)) {
-            mouseButtonDown = true;
             RaycastHit hitInfo = new RaycastHit();
             bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
             if (hit) { // find which face of a cube has been selected, the group it belongs to and the direction the rotate
+                mouseButtonDown = true;
 
                 clickHit = hitInfo;
 
@@ -177,6 +178,15 @@ public class scriptController : MonoBehaviour {
             for (int i = 0; i < 6; i++) {
                 tag.transform.parent.GetChild(i).GetComponent<Renderer>().material = faceMaterials[i];
             }
+        }
+    }
+
+    void cameraControl() {
+        if(Input.GetButtonUp("Right")) {
+            transform.RotateAround(Vector3.zero, Vector3.up, 90);
+        }
+        if (Input.GetButtonUp("Left")) {
+            transform.RotateAround(Vector3.zero, Vector3.up, -90);
         }
     }
 }
